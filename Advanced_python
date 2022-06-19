@@ -1,0 +1,104 @@
+class Car(object):
+    """A generic stock for cars"""
+    
+    def __init__(self,index:int, make, price:int,quantity:int):
+        """To give intitalization setting"""
+    
+
+        self.index = index
+        self.make = make
+        self.price = price
+        self.quantity = quantity
+        self.car_type = "gas"
+
+
+class ElectricCar(Car):
+    """Some car have special feature"""
+    
+    def __init__(self,index:int, make, price:int,quantity:int):
+        super().__init__(index, make, price,quantity)
+        self.car_type = "electric"
+        
+
+class HydrogenCar(Car):
+    """Some car have special features"""
+    
+    def __init__(self,index:int, make, price:int,quantity:int):
+        super().__init__(index, make, price,quantity)
+        self.car_type = "Hydrogen"   
+
+
+
+
+
+class Warehouse():
+    """
+    Functionalirty to do stock management including add,dele and show all stocks
+    """
+    
+    def __init__(self):
+        """
+        To create a list to store the information of all products inside of warehouse
+        """
+        self.goods = []
+        
+    def add(self,product):
+        """
+        To add new product based on different situation
+        """
+        if len(self.goods) == 0:
+            self.goods.append(product) 
+        else:
+            all_index = []
+            for i in range(len(self.goods)): 
+                all_index.append(self.goods[i].index) 
+                
+        for i in range(len(self.goods)):
+            if(self.goods[i].index == product.index):
+                self.goods[i].quantity += product.quantity
+            elif product.index not in list(set(all_index)):  # if there are no same product, the new item will add to warehouse
+                self.goods.append(product)
+
+                        
+                          
+    def dele(self,product):
+        """
+        To dele peoducts
+        """
+        condition = True
+        for i in range(len(self.goods)):
+            if(self.goods[i].index == product.index and self.goods[i].make == product.make):
+                condition = False
+                if(self.goods[i].quantity >= product.quantity):
+                    self.goods[i].quantity -= product.quantity
+                else:
+                    ("Your stocks is not enough to dele")
+        if condition == True:
+            print("You do not hold this item in warehouse")
+    
+    
+    def show_different_type(self):
+        """
+        Get number of stock of a certain type.
+        """
+        number_gasCar = 0
+        number_ElectricCar = 0
+        number_HydrogenCar = 0
+        for i in range(len(self.goods)):
+            if self.goods[i].car_type == "gas":
+                number_gasCar  += self.goods[i].quantity
+            elif self.goods[i].car_type == "electric":
+                number_ElectricCar += self.goods[i].quantity
+            elif self.goods[i].car_type == "Hydrogen":
+                number_HydrogenCar += self.goods[i].quantity
+                
+        print("Gas_car : %s | ElectricCar: %s | HydrogenCar : %s"%(number_gasCar, number_ElectricCar,number_HydrogenCar))
+
+    def list_all(self):
+        """
+        to list all products in warehouse
+        """
+        for i in range(len(self.goods)):
+            print("Product_Index : %s | Product_make: %s | Product_price: %s | Product_Quantity : %s | Product_Type : %s"%(self.goods[i].index,self.goods[i].make,self.goods[i].price,self.goods[i].quantity,
+                                                                                                                      self.goods[i].car_type))
+            
